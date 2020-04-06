@@ -1,0 +1,23 @@
+{
+  "name": "daily-training",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:socunanena/daily-training.git",
+  "author": "Natàlia <natalia.cavi@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html --public-url ."
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.1.1",
+    "bulma": "^0.8.1",
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.26.3",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4"
+  }
+}
