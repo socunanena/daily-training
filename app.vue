@@ -25,14 +25,6 @@
                 <th></th>
               </tr>
             </thead>
-            <!-- <tfoot>
-              <tr>
-                <th>Totals</th>
-                <th>{{ training.cristian.map(({ targetReps }) => targetReps).reduce((total, reps) => total + reps, 0) }}</th>
-                <th>{{ training.cristian.map(({ currentReps }) => currentReps).reduce((total, reps) => total + reps, 0) }}</th>
-                <th>{{  }}</th>
-              </tr>
-            </tfoot> -->
             <tbody>
               <tr v-for="exercise in person.exercises" :key="exercise.name" class="is-vertical-center">
                 <th>{{ exercise.name }}</th>
@@ -42,7 +34,7 @@
                 <td>
                   <div class="field has-addons">
                     <div class="control">
-                      <input class="input" type="number" v-model="exercise.repsToAdd">
+                      <input class="input" type="number" v-model="exercise.repsToAdd" v-on:keyup.enter="addReps(exercise)">
                     </div>
                     <div class="control">
                       <button class="button is-primary" v-on:click="addReps(exercise)">+</button>
@@ -51,8 +43,8 @@
                 </td>
               </tr>
               <tr>
-                <td><input class="input" type="text" placeholder="Exercise name" v-model="person.newExercise.name"></td>
-                <td><input class="input" type="number" placeholder="Target reps" v-model="person.newExercise.reps"></td>
+                <td><input class="input" type="text" placeholder="Exercise name" v-model="person.newExercise.name" v-on:keyup.enter="addExercise(person)"></td>
+                <td><input class="input" type="number" placeholder="Target reps" v-model="person.newExercise.reps" v-on:keyup.enter="addExercise(person)"></td>
                 <td><button class="button is-primary" v-on:click="addExercise(person)">Add exercise</button></td>
                 <td></td>
                 <td></td>
