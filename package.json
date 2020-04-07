@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "parcel index.html",
-    "build": "parcel build index.html --public-url ."
+    "build": "parcel build index.html -d ./public --public-url ."
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^3.1.1",
