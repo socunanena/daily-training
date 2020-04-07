@@ -23,6 +23,7 @@
                 <th>Consumed</th>
                 <th>Remaining</th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -41,11 +42,13 @@
                     </div>
                   </div>
                 </td>
+                <td><button class="button is-danger" v-on:click="deleteExercise(person, exercise)">x</button></td>
               </tr>
               <tr>
                 <td><input class="input" type="text" placeholder="Exercise name" v-model="person.newExercise.name" v-on:keyup.enter="addExercise(person)"></td>
                 <td><input class="input" type="number" placeholder="Target reps" v-model="person.newExercise.reps" v-on:keyup.enter="addExercise(person)"></td>
                 <td><button class="button is-primary" v-on:click="addExercise(person)">Add exercise</button></td>
+                <td></td>
                 <td></td>
                 <td></td>
               </tr>
@@ -90,6 +93,11 @@ export default {
       });
 
       person.newExercise = {};
+    },
+    deleteExercise: function(person, exercise) {
+      const personToUpdate = this.sportsperson.find(p => p.name === person.name);
+
+      personToUpdate.exercises = personToUpdate.exercises.filter(e => e.name !== exercise.name);
     },
     addReps: function(exercise) {
       if (!exercise.repsToAdd) {
