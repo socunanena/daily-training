@@ -1,113 +1,75 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <section class="section">
-        <div class="container">
-          <div class="field has-addons">
-            <div class="control">
-              <input class="input" type="text" placeholder="New person" v-model="newPersonName" v-on:keyup.enter="addSportsperson">
+  <section class="container">
+    <div v-if="exercises.length > 0">
+      <div class="row">
+        <div v-for="exercise in exercises" :key="exercise.name" class="col s12 l6">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+                <span class="card-title">{{ exercise.name }}</span>
+                <p v-if="exercise.target">{{ exercise.target }} {{ exercise.measure }}</p>
+                <p v-else>-</p>
+            </div>
+            <div class="card-action">
+              <span class="chip green z-depth-1">{{ exercise.consumed }} consumed</span>
+              <span v-if="exercise.target" class="chip pink z-depth-1">{{ exercise.target - exercise.consumed }} remining</span>
+              <a :href="`#add-amount-${exercise.name}`" :data-add-amount="`add-amount-${exercise.name}`" class="btn btn-small btn-floating right waves-effect waves-light modal-trigger">
+                <i class="material-icons">add</i>
+              </a>
+              <div :id="`add-amount-${exercise.name}`" class="modal add-amount">
+                <div class="modal-content valign-wrapper container">
+                  <div class="input-field inline">
+                    <input :id="`input-${exercise.name}`" type="number">
+                    <label :for="`input-${exercise.name}`">{{ exercise.name }}</label>
+                  </div>
+                  <div class="input-field inline">
+                    <button class="btn btn-floating btn-small modal-close" type="submit"><i class="material-icons">send</i></button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </section>
-      <section class="section" v-for="person in sportsperson" :key="person.name">
-        <div class="container">
-          <h1 class="title">
-            {{ person.name }}
-          </h1>
-          <table class="table is-fullwidth">
-            <thead>
-              <tr>
-                <th>Exercise</th>
-                <th>Target</th>
-                <th>Consumed</th>
-                <th>Remaining</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="exercise in person.exercises" :key="exercise.name" class="is-vertical-center">
-                <th>{{ exercise.name }}</th>
-                <td>{{ exercise.targetReps }}</td>
-                <td>{{ exercise.consumedReps }}</td>
-                <td>{{ exercise.targetReps - exercise.consumedReps }}</td>
-                <td>
-                  <div class="field has-addons">
-                    <div class="control">
-                      <input class="input" type="number" v-model="exercise.repsToAdd" v-on:keyup.enter="addReps(exercise)">
-                    </div>
-                    <div class="control">
-                      <button class="button is-primary" v-on:click="addReps(exercise)">+</button>
-                    </div>
-                  </div>
-                </td>
-                <td><button class="button is-danger" v-on:click="deleteExercise(person, exercise)">x</button></td>
-              </tr>
-              <tr>
-                <td><input class="input" type="text" placeholder="Exercise name" v-model="person.newExercise.name" v-on:keyup.enter="addExercise(person)"></td>
-                <td><input class="input" type="number" placeholder="Target reps" v-model="person.newExercise.reps" v-on:keyup.enter="addExercise(person)"></td>
-                <td><button class="button is-primary" v-on:click="addExercise(person)">Add exercise</button></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems);
+});
+
 export default {
   name: 'App',
   data: () => ({
-    newPersonName: null,
-    sportsperson: [],
+    userName: null,
+    exercises: [
+      {
+        name: 'HSPU',
+        measure: 'reps',
+        target: 100,
+        consumed: 10,
+      },
+      {
+        name: 'Burpees',
+        measure: 'reps',
+        target: null,
+        consumed: 10,
+      },
+      {
+        name: 'Push-ups',
+        measure: 'reps',
+        target: 50,
+        consumed: 10,
+      },
+    ],
+    measures: [
+      'reps',
+      'seconds',
+    ],
   }),
   methods: {
-    addSportsperson: function() {
-      if (!this.newPersonName) {
-        return;
-      }
-
-      this.sportsperson.push({
-        name: this.newPersonName,
-        exercises: [],
-        newExercise: {},
-      });
-
-      this.newPersonName = null;
-    },
-    addExercise: function(person) {
-      if (!person.newExercise.name || !person.newExercise.reps) {
-        return;
-      }
-
-      person.exercises.push({
-        name: person.newExercise.name,
-        targetReps: person.newExercise.reps,
-        consumedReps: 0,
-      });
-
-      person.newExercise = {};
-    },
-    deleteExercise: function(person, exercise) {
-      const personToUpdate = this.sportsperson.find(p => p.name === person.name);
-
-      personToUpdate.exercises = personToUpdate.exercises.filter(e => e.name !== exercise.name);
-    },
-    addReps: function(exercise) {
-      if (!exercise.repsToAdd) {
-        return;
-      }
-
-      exercise.consumedReps += +exercise.repsToAdd;
-
-      exercise.repsToAdd = null;
-    },
   },
   mounted: function() {
     if (localStorage.sportsperson) {
@@ -120,10 +82,14 @@ export default {
 };
 </script>
 
-<style scoped>
-  @import './node_modules/bulma/bulma';
+<style lang="scss">
+  @import './node_modules/materialize-css/sass/materialize.scss';
 
-  th, td {
-    vertical-align: middle;
+  .add-amount {
+    max-width: 300px;
+
+    .modal-content {
+      padding: 1rem 0 0;
+    }
   }
 </style>
