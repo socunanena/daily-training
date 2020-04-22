@@ -1,33 +1,9 @@
 <template>
   <section class="container">
-    <div v-if="exercises.length > 0">
+    <div v-if="exercises !== {}">
       <div class="row">
-        <div v-for="exercise in exercises" :key="exercise.name" class="col s12 l6">
-          <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-                <span class="card-title">{{ exercise.name }}</span>
-                <p v-if="exercise.target">{{ exercise.target }} {{ exercise.measure }}</p>
-                <p v-else>-</p>
-            </div>
-            <div class="card-action">
-              <span class="chip green z-depth-1">{{ exercise.consumed }} consumed</span>
-              <span v-if="exercise.target" class="chip pink z-depth-1">{{ exercise.target - exercise.consumed }} remining</span>
-              <a :href="`#add-amount-${exercise.name}`" :data-add-amount="`add-amount-${exercise.name}`" class="btn btn-small btn-floating right waves-effect waves-light modal-trigger">
-                <i class="material-icons">add</i>
-              </a>
-              <div :id="`add-amount-${exercise.name}`" class="modal add-amount">
-                <div class="modal-content valign-wrapper container">
-                  <div class="input-field inline">
-                    <input :id="`input-${exercise.name}`" type="number">
-                    <label :for="`input-${exercise.name}`">{{ exercise.name }}</label>
-                  </div>
-                  <div class="input-field inline">
-                    <button class="btn btn-floating btn-small modal-close" type="submit"><i class="material-icons">send</i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div v-for="(exercise, id) in exercises" :key="id" class="col s12 l6">
+          <Exercise :id="id" :exercise="exercise"></Exercise>
         </div>
       </div>
     </div>
@@ -40,30 +16,36 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.Modal.init(elems);
 });
 
+import Exercise from './components/exercise';
+
 export default {
   name: 'App',
+  components: {
+    Exercise,
+  },
   data: () => ({
     userName: null,
-    exercises: [
-      {
-        name: 'HSPU',
-        measure: 'reps',
-        target: 100,
-        consumed: 10,
-      },
-      {
-        name: 'Burpees',
-        measure: 'reps',
-        target: null,
-        consumed: 10,
-      },
-      {
-        name: 'Push-ups',
-        measure: 'reps',
-        target: 50,
-        consumed: 10,
-      },
-    ],
+    // exercises: [
+    //   {
+    //     name: 'HSPU',
+    //     measure: 'reps',
+    //     target: 100,
+    //     consumed: 10,
+    //   },
+    //   {
+    //     name: 'Burpees',
+    //     measure: 'reps',
+    //     target: null,
+    //     consumed: 10,
+    //   },
+    //   {
+    //     name: 'Push-ups',
+    //     measure: 'reps',
+    //     target: 50,
+    //     consumed: 10,
+    //   },
+    // ],
+    exercises: null,
     measures: [
       'reps',
       'seconds',
@@ -71,13 +53,11 @@ export default {
   }),
   methods: {
   },
-  mounted: function() {
-    if (localStorage.sportsperson) {
-      this.sportsperson = JSON.parse(localStorage.sportsperson);
+  beforeMount: function() {
+    console.log('app mounted')
+    if (localStorage.exercises) {
+      this.exercises = JSON.parse(localStorage.exercises);
     }
-  },
-  updated: function() {
-    localStorage.sportsperson = JSON.stringify(this.sportsperson);
   },
 };
 </script>
