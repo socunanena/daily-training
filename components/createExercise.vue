@@ -44,23 +44,6 @@ export default {
       };
 
       this.$emit('createExercise', exercise);
-
-
-
-
-      // console.log('meeeh')
-      // const exercises = JSON.parse(localStorage.exercises);
-
-      // exercises[kebabCase(this.name)] = {
-      //   name: this.name,
-      //   target: this.target,
-      //   measure: this.measure,
-      //   consumed: 0,
-      // };
-
-      // localStorage.exercises = JSON.stringify(exercises);
-
-      // this.$forceUpdate();
     },
   },
 };

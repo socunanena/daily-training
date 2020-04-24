@@ -29,56 +29,26 @@ export default {
     Exercise,
   },
   data: () => ({
-    userName: null,
-    exercises: [
-      {
-        name: 'HSPU',
-        measure: 'reps',
-        target: 100,
-        consumed: 10,
-      },
-      {
-        name: 'Burpees',
-        measure: 'reps',
-        target: null,
-        consumed: 10,
-      },
-      {
-        name: 'Push-ups',
-        measure: 'reps',
-        target: 50,
-        consumed: 10,
-      },
-    ],
-    // exercises: null,
-    measures: [
-      'reps',
-      'seconds',
-    ],
+    exercises: null,
   }),
   methods: {
     addExercise: function(exercise) {
       this.exercises.push(exercise);
 
-
-      // const exercises = JSON.parse(localStorage.exercises);
-
-      // exercises[kebabCase(exercise.name)] = exercise;
-
-      // localStorage.exercises = JSON.stringify(exercises);
+      localStorage.setItem('exercises', JSON.stringify(this.exercises));
     },
     consume: function(exercise, toConsume) {
       exercise.consumed += toConsume;
+
+      localStorage.setItem('exercises', JSON.stringify(this.exercises));
     },
   },
   beforeMount: function() {
-    // if (localStorage.exercises) {
-    //   this.exercises = JSON.parse(localStorage.exercises);
-    // }
-  },
-  updated: function() {
-    // console.log('updated')
-    // localStorage.exercises = JSON.stringify(exercises);
+    try {
+      this.exercises = JSON.parse(localStorage.getItem('exercises'));
+    } catch (error) {
+      this.exercises = [];
+    }
   },
 };
 </script>
