@@ -4,6 +4,10 @@
       <span class="card-title">{{ exercise.name }}</span>
       <p v-if="exercise.target">{{ exercise.target }} {{ exercise.measure }}</p>
       <p v-else>-</p>
+      <a class="btn btn-small btn-flat btn-floating delete-exercise" @click="$emit('deleteExercise', exercise)">
+        <i class="material-icons">clear</i>
+        <!-- <i class="material-icons">delete</i> -->
+      </a>
     </div>
     <div class="card-action">
       <span class="chip green z-depth-1">{{ exercise.consumed }} consumed</span>
@@ -42,3 +46,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .delete-exercise {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+</style>

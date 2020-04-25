@@ -4,7 +4,7 @@
     <div v-if="exercises !== {}">
       <div class="row">
         <div v-for="exercise in exercises" :key="exercise.name" class="col s12 l6">
-          <Exercise :exercise="exercise" @consume="consume(exercise, $event)"></Exercise>
+          <Exercise :exercise="exercise" @consume="consume(exercise, $event)" @deleteExercise="deleteExercise"></Exercise>
         </div>
       </div>
     </div>
@@ -34,6 +34,11 @@ export default {
   methods: {
     addExercise: function(exercise) {
       this.exercises.push(exercise);
+
+      localStorage.setItem('exercises', JSON.stringify(this.exercises));
+    },
+    deleteExercise: function(exercise) {
+      this.exercises.splice(this.exercises.indexOf(exercise), 1);
 
       localStorage.setItem('exercises', JSON.stringify(this.exercises));
     },

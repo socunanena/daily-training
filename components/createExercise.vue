@@ -16,7 +16,7 @@
       <label>Measure</label>
     </div>
     <div class="col s12 center-align">
-      <a class="waves-effect waves-light btn" v-on:click="createExercise">Create exercise</a>
+      <a class="waves-effect waves-light btn" @click="createExercise">Create exercise</a>
     </div>
   </form>
 </template>
@@ -44,6 +44,10 @@ export default {
       };
 
       this.$emit('createExercise', exercise);
+
+      this.name = null;
+      this.target = null;
+      this.measure = null;
     },
   },
 };
