@@ -50,7 +50,7 @@ export default {
   },
   beforeMount: function() {
     try {
-      this.exercises = JSON.parse(localStorage.getItem('exercises'));
+      this.exercises = JSON.parse(localStorage.getItem('exercises')) || [];
     } catch (error) {
       this.exercises = [];
     }
